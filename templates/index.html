@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Document</title>
+        
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+
+    <!-- DataTables -->
+    <link href="{% static 'plugins/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/datatables/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link href="{% static 'plugins/datatables/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/metismenu.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/icons.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+
+
+    <link rel="stylesheet" href="{% static 'assets/css/pointer_event.css' %}">
+
+
+    
+    <script>
+        $(document).ready(function() {
+            $('#datatables').DataTable();
+        } );
+    </script>
+    <style>
+        .hidden {
+            display: none;
+        }
+     
+        .buttons-html5 {
+            background-color: rgb(89, 150, 230);
+            color: white;
+            border: 0px solid white;
+            border-radius: 1px;
+        }
+    
+    </style>
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row" style="margin-left: 3vw;">
+            <div class="col-12">
+                <form action="{% url 'index' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div>
+                        <label for="input_cvs"><h3>Add CV : </h3></label><br><br>
+                        <input type="file" name="cvs" multiple><br><br><br>
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div><br><br><br><br>
+        
+    
+        {% if all_cvs %}
+        <div class="row" style="margin-left:3vw;margin-right:3vw;">
+            <div class="col-12">
+                <div class="card m-b-30">
+                    <div class="card-body">
+                        <h1 style="text-align: center;">All Profiles</h1><br><br>
+
+                
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%">
+                                <thead>
+                                <tr>
+                                    <th width="20%">Email ID</th>
+                                    <th width="14%">Contact Number</th>
+                                    <th width="14%">File Location</th>
+                                </tr>
+                                </thead>
+                                <tbody id="myTable">
+                                
+                                {% for cv in all_cvs %}
+                                <tr>
+                                    <td>{{ cv.email }}</td>
+                                    <td>{{ cv.contact }}</td>
+                                    <td>{{ cv.cv.path }}</td>
+                                </tr>
+                                {% endfor %}
+                                
+                                </tbody>
+                            </table>
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div> <!-- end col -->
+        </div> <!-- end row -->
+        {% endif %}
+
+    </div>
+
+<!-- jQuery  -->
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/metismenu.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.slimscroll.js' %}"></script>
+<script src="{% static 'assets/js/waves.min.js' %}"></script>
+
+<!-- Required datatable js -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Buttons examples -->
+<script src="{% static 'plugins/datatables/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/vfs_fonts.js' %}"></script>
+<script src="{% static 'plugins/datatables/buttons.html5.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/buttons.print.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/buttons.colVis.min.js' %}"></script>
+
+<!-- Responsive examples -->
+<script src="{% static 'plugins/datatables/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/responsive.bootstrap4.min.js' %}"></script>
+
+<!-- Datatable init js -->
+<script src="{% static 'assets/pages/datatables.init.js' %}"></script>
+<script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+<!-- App js -->
+<script src="{% static 'assets/js/app.js' %}"></script>
+
+
+
+<script>
+    $('#datatable').DataTable({
+          "order": [[ 0, "asc" ]],
+            dom: 'Bfrtip',
+            buttons: [
+                { "extend": 'excelHtml5', "text":'Export to CSV',"className": 'cls',
+                exportOptions: {
+                    columns: [ 0, 1, 2]
+                }
+            }   
+            ]
+            
+      });
+</script>
+</body>
+
+</html>
